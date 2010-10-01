@@ -27,6 +27,9 @@ class ReportType(models.Model):
     parts = models.ManyToManyField(Attribute, verbose_name=__(u'parts'))
     delay = TimedeltaField(blank=True, null=True)
     
+    def __unicode__(self):
+        return self.name
+    
     
 class Report(models.Model):
     """

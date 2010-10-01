@@ -4,6 +4,9 @@
 
 # http://www.djangosnippets.org/snippets/1060/
 
+# some code have been change to adapt it to this project
+
+
 # Python
 import datetime
 
@@ -111,35 +114,7 @@ class TimedeltaWidget(forms.Widget):
             ret.append(data.get('%s_%s' % (name, input), 0))
         return tuple(ret)
 
-    def _has_changed(self, initial_value, data_value):
-        # data_value comes from value_from_datadict(): A tuple of strings.
-        assert isinstance(initial_value, datetime.timedelta), initial_value
-        initial=tuple([unicode(i) for i in split_seconds(initial_value.days*SECS_PER_DAY+initial_value.seconds, self.inputs, self.multiply)])
-        assert len(initial)==len(data_value)
-        #assert False, (initial, data_value)
-        return bool(initial!=data_value)
 
-def main():
-    assert split_seconds(1000000)==[11, 13, 46, 40]
-
-    field=TimedeltaField()
-
-    td=datetime.timedelta(days=10, seconds=11)
-    s=field.get_db_prep_save(td)
-    assert isinstance(s, int), (s, type(s))
-    td_again=field.to_python(s)
-    assert td==td_again, (td, td_again)
-
-    td=datetime.timedelta(seconds=11)
-    s=field.get_db_prep_save(td)
-    td_again=field.to_python(s)
-    assert td==td_again, (td, td_again)
-
-    field=TimedeltaFormField()
-    assert field.widget._has_changed(datetime.timedelta(seconds=0), (u'0', u'0', u'0', u'0',)) is False
-    assert field.widget._has_changed(datetime.timedelta(days=1, hours=2, minutes=3, seconds=4), (u'1', u'2', u'3', u'4',)) is False
-
-    print "unittest OK"
 
 def split_seconds(secs, inputs=TimedeltaWidget.INPUTS, multiply=TimedeltaWidget.MULTIPLY):
     ret=[]
@@ -148,5 +123,3 @@ def split_seconds(secs, inputs=TimedeltaWidget.INPUTS, multiply=TimedeltaWidget.
         ret.append(count)
     return ret
 
-if __name__=='__main__':
-    main()
