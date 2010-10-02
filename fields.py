@@ -30,8 +30,12 @@ class TimedeltaField(models.Field):
     def to_python(self, value):
         if (value is None) or isinstance(value, datetime.timedelta):
             return value
-        assert isinstance(value, int), (value, type(value))
-        return datetime.timedelta(seconds=value)
+        try:
+            return datetime.timedelta(seconds=value)
+        except TypeError:
+            # case of the value serialized
+            values = (int(x) for x in value.split(':'))
+            return datetime.timedelta(*values)
 
     def get_internal_type(self):
         return 'IntegerField'
