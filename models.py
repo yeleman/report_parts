@@ -97,6 +97,15 @@ class Report(models.Model):
             return False
     
     
+    def reset_delay(self, d=None):
+        """
+            Change the updated datetime so the delay will be calculted from
+            here. Calls save()
+        """
+        self.updated = d or datetime.datetime.now()
+        self.save()
+    
+    
 class ReportEavConfig(EavConfig):
     eav_attr = 'status'
 

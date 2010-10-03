@@ -47,6 +47,7 @@ Usage
     >>> (2, 2)
     >>> self.summury
     {'introduction': True, 'stats': True}
+    >>> report.reset_delay() # avoid outdating in 4 minutes, restart from now
     
 You can filter reports by attaching eav attributes to it that are not a part
 of the rapport, they will be ignored. This is why report doesn't come with
