@@ -35,7 +35,8 @@ class TimedeltaField(models.Field):
         except TypeError:
             # case of the value serialized
             values = (int(x) for x in value.split(':'))
-            return datetime.timedelta(*values)
+            mksec = lambda x, y: x * 60 + y
+            return datetime.timedelta(seconds=reduce(mksec, values, 0))
 
     def get_internal_type(self):
         return 'IntegerField'
